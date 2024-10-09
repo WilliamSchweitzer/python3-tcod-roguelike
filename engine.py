@@ -6,8 +6,8 @@ from tcod.map import compute_fov
 
 from actions import EscapeAction, MovementAction
 from entity import Entity
-from game_map import GameMap
-from input_handlers import EventHandler
+from gameMap import GameMap
+from inputHandlers import EventHandler
 
 class Engine:
     def __init__(self, eventHandler: EventHandler, gameMap: GameMap, player: Entity):
