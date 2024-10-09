@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
+import copy
+
 import tcod
 
 from engine import Engine
-from entity import Entity
+import entityFactories
 from inputHandlers import EventHandler
 from procgen import generateDungeon
 
@@ -25,7 +27,7 @@ def main() -> None:
 
     eventHandler = EventHandler()
 
-    player = Entity(int(screenWidth / 2), int(screenHeight / 2), "@", (255, 255, 255))
+    player = copy.deepcopy(entityFactories.player)
 
     gameMap = generateDungeon(
         maxRooms=maxRooms,

@@ -16,6 +16,10 @@ class Engine:
         self.player = player
         self.updateFov()
 
+    def handleEnemyTurns(self) -> None:
+        for entity in self.gameMap.entities - {self.player}:
+            print(f"The {entity.name} wonders why it won't attack back.")
+
     def handleEvents(self, events: Iterable[Any]) -> None:
         for event in events:
             action = self.eventHandler.dispatch(event)
@@ -24,7 +28,7 @@ class Engine:
                 continue
             
             action.perform(self, self.player)
-
+            self.handleEnemyTurns()
             self.updateFov()
 
     def updateFov(self) -> None:
