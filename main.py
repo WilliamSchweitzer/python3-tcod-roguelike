@@ -5,7 +5,6 @@ import tcod
 
 from engine import Engine
 import entityFactories
-from inputHandlers import EventHandler
 from procgen import generateDungeon
 
 def main() -> None:
@@ -25,21 +24,21 @@ def main() -> None:
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
     )
 
-    eventHandler = EventHandler()
-
     player = copy.deepcopy(entityFactories.player)
 
-    gameMap = generateDungeon(
+    engine = Engine(player=player)
+
+    engine.gameMap = generateDungeon(
         maxRooms=maxRooms,
         roomMinSize=roomMinSize,
         roomMaxSize=roomMaxSize,
         mapWidth=mapWidth,
         mapHeight=mapHeight,
         maxMonstersPerRoom=maxMonstersPerRoom,
-        player=player,
+        engine=engine,
     )
 
-    engine = Engine(eventHandler=eventHandler, gameMap=gameMap, player=player)
+    engine.updateFov()
 
     with tcod.context.new_terminal(
         screenWidth,
@@ -51,10 +50,9 @@ def main() -> None:
         rootConsole = tcod.console.Console(screenWidth, screenHeight, order="F")
         while True:
             engine.render(console=rootConsole, context=context)
+            
+            engine.eventHandler.handle_events()
 
-            events = tcod.event.wait()
-
-            engine.handleEvents(events)
 
 if __name__ == "__main__":
     main()

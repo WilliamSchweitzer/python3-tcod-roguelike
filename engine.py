@@ -1,35 +1,28 @@
-from typing import Iterable, Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 
 from actions import EscapeAction, MovementAction
-from entity import Entity
-from gameMap import GameMap
 from inputHandlers import EventHandler
 
+if TYPE_CHECKING:
+    from entity import Entity
+    from gameMap import GameMap
+
 class Engine:
-    def __init__(self, eventHandler: EventHandler, gameMap: GameMap, player: Entity):
-        self.eventHandler = eventHandler
-        self.gameMap = gameMap
+    gameMap: GameMap
+
+    def __init__(self, player: Entity):
+        self.eventHandler: EventHandler = EventHandler(self)
         self.player = player
-        self.updateFov()
 
     def handleEnemyTurns(self) -> None:
         for entity in self.gameMap.entities - {self.player}:
             print(f"The {entity.name} wonders why it won't attack back.")
-
-    def handleEvents(self, events: Iterable[Any]) -> None:
-        for event in events:
-            action = self.eventHandler.dispatch(event)
-
-            if action is None:
-                continue
-            
-            action.perform(self, self.player)
-            self.handleEnemyTurns()
-            self.updateFov()
 
     def updateFov(self) -> None:
         """Recompute the visible area based on the players point of view."""
