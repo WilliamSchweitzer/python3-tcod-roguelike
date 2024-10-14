@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Iterable, Optional, TYPE_CHECKING
+from typing import Iterable, Iterator, Optional, TYPE_CHECKING
 
 import numpy as np
 from tcod.console import Console
 
+from entity import Actor
 import tileTypes
 
 if TYPE_CHECKING:
@@ -29,6 +30,15 @@ class GameMap:
 
         self.tiles[30:33, 22] = tileTypes.wall
 
+    @property
+    def actors(self) -> Iterator[Actor]:
+        """Iterate over this maps living actors."""
+        yield from (
+            entity
+            for entity in self.entities
+            if instance(entity, Actor) and entity.isAlive
+        )
+
     def getBlockingEntityAtLocation(
             self, locationX: int, locationY: int
     ) -> Optional[Entity]:
@@ -40,6 +50,13 @@ class GameMap:
             ):
                 return entity
 
+        return None
+
+    def getActorAtLocation(self, x: int, y: int) -> Optional[Actor]:
+        for actor in self.actors:
+            if actor.x == x and actor.y == y:
+                return actor
+        
         return None
 
     def inBounds(self, x: int, y: int) -> bool:
@@ -60,7 +77,13 @@ class GameMap:
             default=tileTypes.SHROUD,
         )
 
-        for entity in self.entities:
+        entitiesSortedForRendering = sorted(
+            self.entities, key=lambda x: x.renderOrder.value
+        )
+
+        for entity in entitiesSortedForRendering:
             # Only print entities that are in the FOV
             if self.visible[entity.x, entity.y]:
-                console.print(x=entity.x, y=entity.y, string=entity.char, fg=entity.color)
+                console.print(
+                    x=entity.x, y=entity.y, string=entity.char, fg=entity.color
+                )
