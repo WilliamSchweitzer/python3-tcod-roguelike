@@ -65,12 +65,13 @@ class MainGameEventHandler(EventHandler):
                 continue
 
             action.perform()
+            
+            self.engine.handleEnemyTurns()
+            self.engine.updateFov()  # Update the FOV before the players next action.
 
-            self.engine.handle_enemy_turns()
-            self.engine.update_fov()  # Update the FOV before the players next action.
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[Action]:
-        action : Optional[Action] = None
+        action: Optional[Action] = None
 
         # Contains the actual key pressed down
         key = event.sym

@@ -26,7 +26,7 @@ class  Fighter(BaseComponent):
 
     @hp.setter
     def hp(self, value: int) -> None:
-        self._hp = max(0, min(value, self.maxHp))
+        self._hp = max(0, min(value, self.maxHP))
         if self._hp == 0 and self.entity.ai:
             self.die()
 

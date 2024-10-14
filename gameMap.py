@@ -9,6 +9,7 @@ from entity import Actor
 import tileTypes
 
 if TYPE_CHECKING:
+    from engine import engine
     from entity import Entity
 
 
@@ -16,7 +17,7 @@ class GameMap:
     def __init__(
         self, engine: Engine, width: int, height: int, entities: Iterable[Entity] = ()
     ):
-        self.engine = engine,
+        self.engine = engine
         self.width, self.height = width, height
         self.entities = set(entities)
         self.tiles = np.full((width, height), fill_value=tileTypes.wall, order="F")
@@ -28,7 +29,7 @@ class GameMap:
             (width, height), fill_value=False, order="F"
         ) # Tiles the player has previously seen
 
-        self.tiles[30:33, 22] = tileTypes.wall
+       # self.tiles[30:33, 22] = tileTypes.wall
 
     @property
     def actors(self) -> Iterator[Actor]:
@@ -36,11 +37,11 @@ class GameMap:
         yield from (
             entity
             for entity in self.entities
-            if instance(entity, Actor) and entity.isAlive
+            if isinstance(entity, Actor) and entity.isAlive
         )
 
     def getBlockingEntityAtLocation(
-            self, locationX: int, locationY: int
+        self, locationX: int, locationY: int
     ) -> Optional[Entity]:
         for entity in self.entities:
             if (

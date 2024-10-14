@@ -14,7 +14,7 @@ class Action:
     @property
     def engine(self) -> Engine:
         """Return the engine this action belongs to."""
-        return self.entity.gamemap.engine
+        return self.entity.gameMap.engine
 
     def perform(self) -> None:
         """Perform this action with the objects needed to determine its scope.
@@ -78,6 +78,8 @@ class MeleeAction(ActionWithDirection):
 
 class MovementAction(ActionWithDirection):
     def perform(self) -> None:
+        destX, destY = self.destXY
+
         if not self.engine.gameMap.inBounds(destX, destY):
             return # Destination is out of bounds
         if not self.engine.gameMap.tiles["walkable"][destX, destY]:

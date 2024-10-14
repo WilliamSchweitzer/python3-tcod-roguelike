@@ -6,7 +6,6 @@ from tcod.context import Context
 from tcod.console import Console
 from tcod.map import compute_fov
 
-from actions import EscapeAction, MovementAction
 from inputHandlers import MainGameEventHandler
 
 if TYPE_CHECKING:

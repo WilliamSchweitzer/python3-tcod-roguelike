@@ -6,20 +6,20 @@ from typing import Optional, Tuple, Type, TypeVar, TYPE_CHECKING
 from renderOrder import RenderOrder
 
 if TYPE_CHECKING:
-    from componenets.ai import BaseAI
-    from componenets.fighter import Figter
-    from game_map import GameMap
+    from components.ai import BaseAI
+    from components.fighter import Fighter
+    from gameMap import GameMap
 
 T = TypeVar("T", bound="Entity")
 
 class Entity:
     # Generic object to represent players, enemies, items, etc.
     
-    gamemap: GameMap
+    gameMap: GameMap
 
     def __init__(
         self,
-        gamemap: Optional[GameMap] = None,
+        gameMap: Optional[GameMap] = None,
         x: int = 0,
         y: int = 0,
         char: str = "?",
@@ -35,29 +35,29 @@ class Entity:
         self.name = name
         self.blocksMovement = blocksMovement
         self.renderOrder = renderOrder
-        if gamemap:
+        if gameMap:
             # If gameMap isn't provided now then it will be set later.
-            self.gameMap = gamemap
-            gamemap.entites.add(self)
+            self.gameMap = gameMap
+            gameMap.entites.add(self)
 
-    def spawn(self: T, gamemap: GameMap, x: int, y: int) -> T:
+    def spawn(self: T, gameMap: GameMap, x: int, y: int) -> T:
         """Spawn a copy of this instance at the given location."""
         clone = copy.deepcopy(self)
         clone.x = x
         clone.y = y
-        clone.gamemap = gamemap
-        gamemap.entities.add(clone)
+        clone.gameMap = gameMap
+        gameMap.entities.add(clone)
         return clone
 
-    def place(self, x: int, y: int, gamemap: Optional[GameMap] = None) -> None:
+    def place(self, x: int, y: int, gameMap: Optional[GameMap] = None) -> None:
         """Place this entity at a new location. Handles moving across GameMaps."""
         self.x = x
         self.y = y
-        if gamemap:
-            if hasattr(self, "gamemap"): # Possibly uninitialized.
-                self.gamemap.entities.remove(self)
-            self.gamemap = gamemap
-            gamemap.entities.add(self)
+        if gameMap:
+            if hasattr(self, "gameMap"): # Possibly uninitialized.
+                self.gameMap.entities.remove(self)
+            self.gameMap = gameMap
+            gameMap.entities.add(self)
 
     def move(self, dx: int, dy: int) -> None:
         self.x += dx
@@ -82,7 +82,7 @@ class Actor(Entity):
             color=color,
             name=name,
             blocksMovement=True,
-            renderOrder=RenderOrder.ACTOR
+            renderOrder=RenderOrder.ACTOR,
         )
 
         self.ai: Optional[BaseAI] = ai_cls(self)
