@@ -3,6 +3,7 @@ import copy
 
 import tcod
 
+import color
 from engine import Engine
 import entityFactories
 from procgen import generateDungeon
@@ -12,7 +13,7 @@ def main() -> None:
     screenHeight = 50
 
     mapWidth = 80
-    mapHeight = 45
+    mapHeight = 43
 
     roomMaxSize = 10
     roomMinSize = 6
@@ -40,6 +41,10 @@ def main() -> None:
 
     engine.updateFov()
 
+    engine.messageLog.addMessage(
+        "Welcome to your doom, adventurer.", color.welcomeText
+    )
+
     with tcod.context.new_terminal(
         screenWidth,
         screenHeight,
@@ -49,9 +54,11 @@ def main() -> None:
     ) as context:
         rootConsole = tcod.console.Console(screenWidth, screenHeight, order="F")
         while True:
-            engine.render(console=rootConsole, context=context)
+            rootConsole.clear()
+            engine.eventHandler.on_render(console=rootConsole)
+            context.present(rootConsole)
             
-            engine.eventHandler.handle_events()
+            engine.eventHandler.handle_events(context)
 
 
 if __name__ == "__main__":
