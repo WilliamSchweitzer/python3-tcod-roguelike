@@ -31,6 +31,31 @@ class Action:
 
         raise NotImplementedError()
 
+class PickupAction(Action):
+    """Pickup an item and add it to the inventory, if there is room for it."""
+
+    def __init__(self, entity: Actor):
+        super().__init__(entity)
+
+    def perform(self) -> None:
+        actorLocationX = self.entity.x
+        actorLocationY = self.entity.y
+        inventory = self.entity.inventory
+
+        for item in self.engine.gameMap.items:
+            if actorLocationX == item.x and actorLocationY == item.y:
+                if len(inventory.items) >= inventory.capacity:
+                    raise exceptions.Impossible("Your inventory is full.")
+
+                self.engine.gameMap.entities.remove(item)
+                item.parent = self.entity.inventory
+                inventory.items.append(item)
+
+                self.engine.messageLog.addMessage(f"You picked up the {item.name}!")
+                return
+
+        raise exceptions.Impossible("There is nothing here to pick up.")
+        
 class ItemAction(Action):
     def __init__(
         self, entity: Actor, item: Item, targetXY: Optional[Tuple[int, int]] = None
