@@ -9,6 +9,7 @@ from actions import (
     Action,
     BumpAction,
     EscapeAction,
+    PickupAction,
     WaitAction
 )
 import color
@@ -109,6 +110,9 @@ class MainGameEventHandler(EventHandler):
             action = EscapeAction(player)
         elif key == tcod.event.KeySym.v:
             self.engine.eventHandler = HistoryViewer(self.engine)
+
+        elif key == tcod.event.KeySym.g:
+            action = PickupAction(player)
 
         # Return action regardless of what key was pressed, could be None
         return action
