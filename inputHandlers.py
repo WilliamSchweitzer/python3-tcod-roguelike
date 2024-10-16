@@ -5,7 +5,14 @@ from typing import Optional, TYPE_CHECKING
 from tcod import libtcodpy
 import tcod.event
 
-from actions import Action, BumpAction, EscapeAction, WaitAction
+from actions import ( 
+    Action,
+    BumpAction,
+    EscapeAction,
+    WaitAction
+)
+import color
+import exceptions
 
 if TYPE_CHECKING:
     from engine import Engine
