@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import copy
+import traceback
 
 import tcod
 
@@ -20,6 +21,7 @@ def main() -> None:
     maxRooms = 30
 
     maxMonstersPerRoom = 2
+    maxItemsPerRoom = 2
 
     tileset = tcod.tileset.load_tilesheet(
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
@@ -36,6 +38,7 @@ def main() -> None:
         mapWidth=mapWidth,
         mapHeight=mapHeight,
         maxMonstersPerRoom=maxMonstersPerRoom,
+        maxItemsPerRoom=maxItemsPerRoom,
         engine=engine,
     )
 
@@ -57,9 +60,15 @@ def main() -> None:
             rootConsole.clear()
             engine.eventHandler.on_render(console=rootConsole)
             context.present(rootConsole)
-            
-            engine.eventHandler.handle_events(context)
 
+            try:
+                for event in tcod.event.wait():
+                    context.convert_event(event)
+                    engine.eventHandler.handle_events(event)
+            except Exception: # Handle exceptions in game.
+                traceback.print_exc() # Print error to stderr.
+                # Then print the error to the message log.
+                engine.messageLog.addMessage(traceback.format_exc(), color.error)
 
 if __name__ == "__main__":
     main()
