@@ -76,7 +76,7 @@ class EventHandler(tcod.event.EventDispatch[Action]):
 
         self.engine.handleEnemyTurns()
 
-        self.engine.updateFOV()
+        self.engine.updateFov()
         return True
 
     def ev_mousemotion(self, event: tcod.event.MouseMotion) -> None:
