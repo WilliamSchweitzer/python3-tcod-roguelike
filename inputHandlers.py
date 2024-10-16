@@ -188,10 +188,10 @@ class InventoryEventHandler(AskUserEventHandler):
             except IndexError:
                 self.engine.messageLog.addMessage("Invalid entry.", color.invalid)
                 return None
-            return self.on_item_selected(selected_item)
+            return self.onItemSelected(selectedItem)
         return super().ev_keydown(event)
 
-    def on_item_selected(self, item: Item) -> Optional[Action]:
+    def onItemSelected(self, item: Item) -> Optional[Action]:
         """Called when the user selects a valid item."""
         raise NotImplementedError()
 

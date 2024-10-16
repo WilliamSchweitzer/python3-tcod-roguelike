@@ -35,7 +35,7 @@ class HealingConsumable(Consumable):
         amountRecovered = consumer.fighter.heal(self.amount)
 
         if amountRecovered > 0:
-            self.engine.message_log.addMessage(
+            self.engine.messageLog.addMessage(
                 f"You consume the {self.parent.name}, and recover {amountRecovered} HP!",
                 color.healthRecovered,
             )
