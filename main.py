@@ -21,6 +21,7 @@ def main() -> None:
     maxRooms = 30
 
     maxMonstersPerRoom = 2
+    maxItemsPerRoom = 2
 
     tileset = tcod.tileset.load_tilesheet(
         "dejavu10x10_gs_tc.png", 32, 8, tcod.tileset.CHARMAP_TCOD
@@ -37,6 +38,7 @@ def main() -> None:
         mapWidth=mapWidth,
         mapHeight=mapHeight,
         maxMonstersPerRoom=maxMonstersPerRoom,
+        maxItemsPerRoom=maxItemsPerRoom,
         engine=engine,
     )
 
