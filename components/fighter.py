@@ -20,6 +20,24 @@ class Fighter(BaseComponent):
         self.defense = defense
         self.power = power
 
+    def heal(self, amount: int) -> int:
+        if self.hp == self.maxHP:
+            return 0
+        
+        newHPValue = self.hp + amount
+
+        if newHPValue > self.maxHP:
+            newHPValue = self.maxHP
+
+        amountRecovered = newHPValue - self.hp
+
+        self.hp = newHPValue
+
+        return amountRecovered
+
+    def takeDamage(self, amount: int) -> None:
+        self.hp -= amount
+
     @property
     def hp(self) -> int:
         return self._hp
