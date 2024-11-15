@@ -55,9 +55,3 @@ class Engine:
         )
 
         renderNamesAtMouseLocation(console=console, x=21, y=44, engine=self)
-
-        console.print(
-            x=1,
-            y=47,
-            string=f"HP: {self.player.fighter.hp}/{self.player.fighter.maxHP}",
-        )
