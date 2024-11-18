@@ -63,7 +63,12 @@ def placeEntities(
         y = random.randint(room.y1 + 1, room.y2 - 1)
 
         if not any(entity.x == x and entity.y == y for entity in dungeon.entities):
-            entityFactories.healthPotion.spawn(dungeon, x, y)
+            itemChance = random.random()
+
+            if itemChance < 0.7:
+                entityFactories.healthPotion.spawn(dungeon, x, y)
+            else:
+                entityFactories.lightningScroll.spawn(dungeon, x, y)
 
 def tunnelBetween(
     start: Tuple[int, int], end: Tuple[int, int]
