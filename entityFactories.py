@@ -30,7 +30,12 @@ troll = Actor(
     fighter=Fighter(hp=16, defense=1, power=4),
     inventory=Inventory(capacity=0),
 )
-
+confusionScroll = Item(
+    char="~",
+    color=(207, 63, 255),
+    name="Confusion Scroll",
+    consumable=consumable.ConfusionConsumable(numberOfTurns=10),
+)
 healthPotion = Item(
     char="!",
     color=(127, 0, 255),

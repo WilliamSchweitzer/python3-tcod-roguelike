@@ -67,6 +67,8 @@ def placeEntities(
 
             if itemChance < 0.7:
                 entityFactories.healthPotion.spawn(dungeon, x, y)
+            elif itemChance < 0.9:
+                entityFactories.confusionScroll.spawn(dungeon, x, y)
             else:
                 entityFactories.lightningScroll.spawn(dungeon, x, y)
 
